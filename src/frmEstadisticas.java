@@ -93,7 +93,7 @@ public class frmEstadisticas {
       Estadistica.filePath = path;
       // mostramos el nombre del archivo en el label
       lnlFilePath.setText("Archivo: " + fichero.getName());
-    }
+    } 
   }
 
   private void btnGenerar_Click(Object o) {}
