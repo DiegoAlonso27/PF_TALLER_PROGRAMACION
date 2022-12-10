@@ -1,8 +1,5 @@
 package helpers;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -12,7 +9,7 @@ public class ProjectHelper {
   );
 
   private static Pattern dateTimePattern2 = Pattern.compile(
-    "\\d{1,2}/\\d{1,2}/\\d{2,4}, \\d{2}:\\d{2}"
+    "\\d{1,2}/\\d{1,2}/\\d{2,4}, \\d{2}:\\d{2,4}"
   );
   private static Pattern usPattern = Pattern.compile("- ([^:]{0,30}):");
 
@@ -33,61 +30,6 @@ public class ProjectHelper {
     }
   }
 
-  public static String convertDate(String date) {
-    // creamos un objeto de tipo SimpleDateFormat para convertir la fecha
-    SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-    // validamos con que formato viene la fecha
-    Matcher dateMatcher = dateTimePattern1.matcher(date);
-    Matcher dateMatcher2 = dateTimePattern2.matcher(date);
-    // si la fecha viene con el formato dateTimePattern1 la convertimos a SimpleDateFormat
-    if (dateMatcher.find()) {
-        // sacamos los datos de la fecha
-        String day = dateMatcher.group(1);
-        String month = dateMatcher.group(2);
-        String year = dateMatcher.group(3);
-        String hour = dateMatcher.group(4);
-        String minute = dateMatcher.group(5);
-        // sacamos si es a. m o p. m
-        String ampm = dateMatcher.group(6);
-        // si es p. m le sumamos 12 a la hora
-        if (ampm.equals("p. m")) {
-          hour = String.valueOf(Integer.parseInt(hour) + 12);
-        }
-        // creamos la fecha con el formato de SimpleDateFormat
-        date = day + "/" + month + "/" + year + " " + hour + ":" + minute + ":00";
-        // convertimos la fecha a Date
-        try {
-          Date date1 = formatter.parse(date);
-          // convertimos la fecha a String
-          date = formatter.format(date1);
-        } catch (ParseException e) {
-          e.printStackTrace();
-        }
-    } else if (dateMatcher2.find()) {
-        // si la fecha viene con el formato dateTimePattern2 la convertimos a SimpleDateFormat
-        // sacamos los datos de la fecha
-        String day = dateMatcher2.group(1);
-        String month = dateMatcher2.group(2);
-        String year = dateMatcher2.group(3);
-        String hour = dateMatcher2.group(4);
-        String minute = dateMatcher2.group(5);
-        // al año le sumamos 2000
-        year = String.valueOf(Integer.parseInt(year) + 2000);
-        // creamos la fecha con el formato de SimpleDateFormat
-        date = day + "/" + month + "/" + year + " " + hour + ":" + minute + ":00";
-        // convertimos la fecha a Date
-        try {
-          Date date1 = formatter.parse(date);
-          // convertimos la fecha a String
-          date = formatter.format(date1);
-        } catch (ParseException e) {
-          e.printStackTrace();
-        }
-
-    }
-    return date;
-  }
-
   public static String findUser(String text) {
     // Crear un objeto Matcher que se ajuste al patrón en el texto dado
     Matcher userMatcher = usPattern.matcher(text);
@@ -98,5 +40,93 @@ public class ProjectHelper {
     }
     // Si no se encuentra una coincidencia, devolver un arreglo vacío
     return "";
+  }
+
+  // Función que convierte los formatos de fechas de WhatsApp a formato dd/mm/aaaa hh:mm:ss
+  public static String convertDate(String dateTime) {
+    // Crear un objeto Matcher que se ajuste al patrón en el texto dado
+    Matcher dateMatcher = dateTimePattern1.matcher(dateTime);
+    Matcher dateMatcher2 = dateTimePattern2.matcher(dateTime);
+    // Intentar encontrar la primera coincidencia del patrón en el texto
+    if (dateMatcher.find()) {
+      try {
+        // Crea un patrón a partir de la expresión regular
+      Pattern pattern = Pattern.compile("(\\d{1,2})/(\\d{1,2})/(\\d{4})");
+      // Crea un objeto Matcher que se ajuste al patrón en el texto dado
+      Matcher matcher = pattern.matcher(dateTime);
+      // Intentar encontrar la primera coincidencia del patrón en el texto
+      if (matcher.find()) {
+        // Si se encuentra una coincidencia, obtener los grupos que coinciden con el patrón
+        String day = matcher.group(1);
+        String month = matcher.group(2);
+        String year = matcher.group(3);
+
+        // si el dia solo tiene un digito, agregarle un 0 a la izquierda
+        if (day.length() == 1) {
+          day = "0" + day;
+        }
+
+        // si el mes solo tiene un digito, agregarle un 0 a la izquierda
+        if (month.length() == 1) {
+          month = "0" + month;
+        }
+
+        // guardar la fecha en formato dd/mm/aaaa
+        String date = day + "/" + month + "/" + year;
+
+        // retornar la fecha en formato dd/mm/aaaa
+        return date;
+      } else {
+        // Si no se encuentra una coincidencia, devolver una cadena vacía
+        return "";
+      }
+      } catch (Exception e) {
+        // TODO: handle exception
+        return "Error al convertir la fecha: " + e.getMessage();
+      }
+    } else if (dateMatcher2.find()) {
+        try {
+            // Crea un patrón a partir de la expresión regular
+        Pattern pattern = Pattern.compile("(\\d{1,2})/(\\d{1,2})/(\\d{2,4})");
+        // Crea un objeto Matcher que se ajuste al patrón en el texto dado
+        Matcher matcher = pattern.matcher(dateTime);
+        // Intentar encontrar la primera coincidencia del patrón en el texto
+        if (matcher.find()) {
+            // Si se encuentra una coincidencia, obtener los grupos que coinciden con el patrón
+            String day = matcher.group(1);
+            String month = matcher.group(2);
+            String year = matcher.group(3);
+
+            // si el dia solo tiene un digito, agregarle un 0 a la izquierda
+            if (day.length() == 1) {
+                day = "0" + day;
+            }
+
+            // si el mes solo tiene un digito, agregarle un 0 a la izquierda
+            if (month.length() == 1) {
+                month = "0" + month;
+            }
+
+            // si el año tiene 2 dígitos, agregarle 2000
+            if (year.length() == 2) {
+                year = "20" + year;
+            }
+    
+            // guardar la fecha en formato dd/mm/aaaa
+            String date = day + "/" + month + "/" + year;
+    
+            // retornar la fecha en formato dd/mm/aaaa
+            return date;
+        } else {
+            // Si no se encuentra una coincidencia, devolver una cadena vacía
+            return "";
+        }
+        } catch (Exception e) {
+            return "Error al convertir la fecha: " + e.getMessage();
+        }
+    } else {
+      // Si no se encuentra una coincidencia, devolver una cadena vacía
+      return "";
+    }
   }
 }

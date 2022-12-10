@@ -24,14 +24,16 @@ public class ArrayHelper {
     }
   }
 
-public static String[][] resize(String[][] users, int i) {
+public static String[][] resize(String[][] users, int i, int c) {
     // creamos un array temporal con el tamaño que le pasamos
-    String[][] temp = new String[i][2];
+    String[][] temp = new String[i][c];
     // recorremos el array
     for (int j = 0; j < users.length; j++) {
       // copiamos los valores del array original al temporal
-      temp[j][0] = users[j][0];
-      temp[j][1] = users[j][1];
+      // con la varable c podemos indicar cuantas columnas queremos copiar
+      for (int k = 0; k < c; k++) {
+        temp[j][k] = users[j][k];
+      }
     }
     // devolvemos el array temporal
     return temp;

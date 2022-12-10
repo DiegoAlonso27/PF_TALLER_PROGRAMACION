@@ -1,30 +1,27 @@
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import helpers.ArrayHelper;
 import helpers.FileHelper;
 import helpers.ProjectHelper;
 
-public class Main {
+public class Estadistica {
   // Array bidimensional para guardar los usuarios y un id para cada uno
   private static String[][] users = new String[100][2];
   // Array para guardar los mensajes y un id para cada uno y el id del usuario que lo envió
-  private static String[][] messages = new String[100][4]; // id, user_id, message, date
+  private static String[][] messages = new String[10][4]; // id, user_id, message, date
+  public static String lastUser;
+  public static String lastDate;
+  public static String filePath;
 
   public static void main(String[] args) {
-    String path = "/src/assets/extracto_chat.txt";
-    // vemos en que directorio estamos y lo concatenamos con el path del archivo
-    path = FileHelper.joinPath(path);
-    // verificamos si el archivo existe
-    if (!FileHelper.exists(path)) {
-      System.out.println("El archivo no existe");
-      return;
-    }
-    String[] text = FileHelper.readFile(path);
+    // llamamos al metoddo mostrar de frmEstadisticas
+    // Crea una instancia de la clase Estadisticas
+    frmEstadisticas estadisticas = new frmEstadisticas();
+    // Llama al método mostrar de la instancia de Estadisticas
+    estadisticas.mostrar();
+  }
 
+  // metodo para extraer los datos del archivo
+  public static void extraerDatos(String path) {
+    String[] text = FileHelper.readFile(path);
     // Recorrer el array de texto
     int id = 0;
     for (String line : text) {
@@ -36,20 +33,13 @@ public class Main {
         if (!ArrayHelper.inArray(users, user)) {
           // si el array está lleno aumentamos su tamaño
           if (id == users.length) {
-            users = ArrayHelper.resize(users, users.length + 1);
+            users = ArrayHelper.resize(users, users.length + 1, 2);
           }
           // añadimos el usuario al array con su id
           users[id][0] = user;
           users[id][1] = String.valueOf(id + 1);
           id++;
         }
-      }
-    }
-    // imprimimos la lista de usuarios con su id
-    for (String[] user : users) {
-      // si el usuario no es null lo imprimimos
-      if (user[0] != null) {
-        System.out.println(user[0] + " " + user[1]);
       }
     }
     // Recorrer el array de texto otra vez para guardar los mensajes y la fecha en el array messages, le asignamos un id a cada mensaje y el id del usuario que lo envió
@@ -68,44 +58,42 @@ public class Main {
       if (!date.isEmpty() && !user.isEmpty()) {
         // si el array está lleno aumentamos su tamaño
         if (id == messages.length) {
-          messages = ArrayHelper.resize(messages, messages.length + 1);
+          messages = ArrayHelper.resize(messages, messages.length + 1, 4);
         }
         // guardamos el mensaje en el array messages
         messages[id][0] = String.valueOf(id + 1);
+        // buscamos el id del usuario que envió el mensaje, validamos que el usuario exista
+        if (ArrayHelper.findId(users, user) == null) {
+          System.out.println("El usuario " + user + " no existe");
+          return;
+        }
         messages[id][1] = ArrayHelper.findId(users, user);
+        // guardamos el usuario que envió el mensaje
+        lastUser = user;
         messages[id][2] = message;
         messages[id][3] = dateFormat;
+        // guardamos la fecha del mensaje
+        lastDate = dateFormat;
         id++;
+      } else { // si no detecta ningun usuario en la linea lo guarda como mensaje del ultimo usuario
+        // si el array está lleno aumentamos su tamaño
+        if (id == messages.length) {
+          messages = ArrayHelper.resize(messages, messages.length + 1, 4);
+        }
+        // guardamos el mensaje en el array messages
+        messages[id][0] = String.valueOf(id + 1);
+        // buscamos el id del usuario que envió el mensaje, validamos que el usuario exista
+        if (ArrayHelper.findId(users, lastUser) == null) {
+          System.out.println("El usuario " + lastUser + " no existe");
+          return;
+        }
+        messages[id][1] = ArrayHelper.findId(users, lastUser);
+        // guardamos el usuario que envió el mensaje
+        messages[id][2] = message;
+        messages[id][3] = lastDate;
+        id++;
+
       }
     }
-    // imprimimos la lista de mensajes con su id, el id del usuario que lo envió, el mensaje y la fecha
-    for (String[] message : messages) {
-      // si el mensaje no es null lo imprimimos
-      if (message[0] != null) {
-        System.out.println(
-          message[0] + " " + message[1] + " " + message[2] + " " + message[3]
-        );
-      }
-    }
-    // imprimir cada línea del archivo
-    /* for (String line : text) {
-      // guardar la fecha en una variable
-      String date = findDateAtBeginning(line);
-      // guardar el usuario en una variable
-      String user = findUser(line);
-      // todo lo que no sea fecha o usuario lo guardamos en una variable
-      String message = line
-        .replace(date, "")
-        .replace(new String(user), "")
-        .replace("- :", "");
-      // si la fecha no está vacía la imprimimos
-      if (!date.isEmpty()) {
-        System.out.println(date + " " + new String(user) + ":");
-        System.out.println(message);
-      } else {
-        // si la fecha esta vacia imprimimos la linea
-        System.out.println("No se encontró fecha: " + line);
-      }
-    } */
   }
 }
