@@ -1,13 +1,9 @@
-
-
 import helpers.FileHelper;
 import helpers.ProjectHelper;
-
 import java.io.File;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
-
 import vendor.SwingUTP;
 
 public class frmEstadisticas {
@@ -15,7 +11,8 @@ public class frmEstadisticas {
   JTextArea jtestadistica;
   JTextField txtDesde, txtHasta;
   JComboBox<String> lstFormatos;
-  JButton btnSeleccionar, btnCopiar, btnGuardar, btnGenerar;
+  JButton btnSeleccionar, btnCopiar, btnGuardar, btnGenerar, cleanDate;
+  JButton btnCSV, btnTXT, btnHTML, btnXLSX, btnJSON;
   JFrame frame = new JFrame();
   JFormattedTextField txtDateInit = new JFormattedTextField();
   JFormattedTextField txtDateFInich = new JFormattedTextField();
@@ -41,6 +38,13 @@ public class frmEstadisticas {
     btnGenerar = new JButton("GENERAR DATOS");
     btnCopiar = new JButton("COPIAR");
     btnGuardar = new JButton("GUARDAR");
+    cleanDate = new JButton("Limpiar fecha");
+    btnCSV = new JButton("CSV");
+    btnTXT = new JButton("TXT");
+    btnHTML = new JButton("HTML");
+    btnXLSX = new JButton("XLSX");
+    btnJSON = new JButton("JSON");
+    
 
     jtestadistica = new JTextArea(80, 50);
 
@@ -49,9 +53,12 @@ public class frmEstadisticas {
     // Set the size of the frame
     frame.setSize(600, 400);
     // Create a new JTable
-    
+
     // Set the model of the table
-    DefaultTableModel model = new DefaultTableModel(new String[] { "PARTICIPANTES", "INTERACCCIONES", "MEDIAS" }, 0);
+    DefaultTableModel model = new DefaultTableModel(
+      new String[] { "PARTICIPANTES", "INTERACCCIONES", "MEDIAS" },
+      0
+    );
     table.setModel(model);
     // Add the table to a scroll pane
     JScrollPane scrollPane = new JScrollPane(table);
@@ -60,13 +67,12 @@ public class frmEstadisticas {
     // a lado del boton seleccionar agregamos un label con el nombre del archivo
     SwingUTP.addControl(200, 1, 400, 25, lnlFilePath);
 
-    SwingUTP.addControl(10, 40, 150, 25, lblInicio);
-    SwingUTP.addDateField(80, 40, 150, 25, txtDateInit);
-    SwingUTP.addControl(250, 40, 150, 25, lblFin);
-    SwingUTP.addDateField(320, 40, 150, 25, txtDateFInich);
-    SwingUTP.addControl(490, 40, 150, 25, lbltexto);
-    
-    
+    SwingUTP.addControl(10, 35, 150, 25, lblInicio);
+    SwingUTP.addDateField(60, 35, 120, 25, txtDateInit);
+    SwingUTP.addControl(190, 35, 150, 25, lblFin);
+    SwingUTP.addDateField(240, 35, 120, 25, txtDateFInich);
+    SwingUTP.addControl(380, 35, 150, 25, lbltexto);
+    SwingUTP.addControl(490, 35, 150, 25, cleanDate);
 
     SwingUTP.addControl(10, 80, 100, 20, lblestadistica);
 
@@ -74,16 +80,28 @@ public class frmEstadisticas {
 
     //SwingUTP.addControl(10, 135, 600, 380, jtestadistica);
     // agregamos un DataGrid para mostrar los datos
-    SwingUTP.addControl(10, 120, 600, 400, scrollPane);
-    
+    SwingUTP.addControl(10, 120, 650, 400, scrollPane);
 
-    SwingUTP.addControl(10, 530, 150, 25, btnCopiar);
-    SwingUTP.addControl(400, 530, 150, 25, btnGuardar);
+    /* SwingUTP.addControl(10, 530, 150, 25, btnCopiar);
+    SwingUTP.addControl(400, 530, 150, 25, btnGuardar); */
+    // ponemos los botones para exportar a diferentes formatos en una sola linea
+    SwingUTP.addControl(10, 530, 120, 25, btnCSV);
+    SwingUTP.addControl(140, 530, 120, 25, btnTXT);
+    SwingUTP.addControl(270, 530, 120, 25, btnHTML);
+    SwingUTP.addControl(400, 530, 120, 25, btnXLSX);
+    SwingUTP.addControl(530, 530, 120, 25, btnJSON);
+    
 
     SwingUTP.addClickEvent(btnSeleccionar, this::btnSeleccionar_Click);
     SwingUTP.addClickEvent(btnGenerar, this::btnGenerar_Click);
     SwingUTP.addClickEvent(btnCopiar, this::btnCopiar_Click);
     SwingUTP.addClickEvent(btnGuardar, this::btnGuardar_Click);
+    SwingUTP.addClickEvent(btnCSV, this::btnCSV_Click);
+    SwingUTP.addClickEvent(btnTXT, this::btnTXT_Click);
+    SwingUTP.addClickEvent(btnHTML, this::btnHTML_Click);
+    SwingUTP.addClickEvent(btnXLSX, this::btnXLSX_Click);
+    SwingUTP.addClickEvent(btnJSON, this::btnJSON_Click);
+    SwingUTP.addClickEvent(cleanDate, this::cleanDate_Click);
   }
 
   private void btnSeleccionar_Click(Object o) {
@@ -113,7 +131,7 @@ public class frmEstadisticas {
       Estadistica.filePath = path;
       // mostramos el nombre del archivo en el label
       lnlFilePath.setText("Archivo: " + path);
-    } 
+    }
   }
 
   private void btnGenerar_Click(Object o) {
@@ -153,12 +171,32 @@ public class frmEstadisticas {
         return;
       }
     }
-    // obtenemos los datos de la estadistica
-    Estadistica.generarEstadistica();
+    // obtenemos los datos de la estadistica, mandamos las fechas
+    Estadistica.generarEstadistica( txtDateInit.getText(), txtDateFInich.getText() );
     // mostramos los datos en el textArea
   }
 
   private void btnCopiar_Click(Object o) {}
 
   private void btnGuardar_Click(Object o) {}
+
+  private void btnCSV_Click(Object object1) {
+  }
+
+  private void btnTXT_Click(Object object1) {
+  }
+
+  private void btnHTML_Click(Object object1) {
+  }
+
+  private void btnXLSX_Click(Object object1) {
+  }
+
+  private void btnJSON_Click(Object object1) {
+  }
+
+  private void cleanDate_Click(Object o) {
+    txtDateInit.setText("");
+    txtDateFInich.setText("");
+  }
 }

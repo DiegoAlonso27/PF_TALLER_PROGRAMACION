@@ -57,8 +57,8 @@ public class ArrayHelper {
     int count = 0;
     // recorremos el array
     for (String[] m : messages) {
-      // si el usuario ya está en el array, devolvemos su id
-      if (m[1].equals(string)) {
+      // comprobamos que el id del usuario sea igual al id del mensaje y que el mensaje no sea null
+      if (m[1] != null && m[1].equals(string)) {
         count++;
       }
     }
@@ -73,7 +73,7 @@ public class ArrayHelper {
     // recorremos el array
     for (String[] m : messages) {
       // comprobamos que el id del usuario sea igual al id del mensaje
-      if (m[1].equals(idUser)) {
+      if (m[1] != null && m[1].equals(idUser)) {
         // si el array temporal está vacío, creamos un array temporal con el tamaño del array de mensajes
         if (temp.length == 0) {
           temp = new String[messages.length][3];
@@ -88,7 +88,6 @@ public class ArrayHelper {
             break;
           }
         }
-
       }
     }
     // devolvemos el array temporal
@@ -105,11 +104,42 @@ public class ArrayHelper {
         continue;
       }
       // si el mensaje contiene "<Multimedia omitido>" o "<Media omitted>", sumar 1 al contador
-      if (messagesUser[i][2].contains("<Multimedia omitido>") || messagesUser[i][2].contains("<Media omitted>")) {
+      if (
+        messagesUser[i][2].contains("<Multimedia omitido>") ||
+        messagesUser[i][2].contains("<Media omitted>")
+      ) {
         multimediaMessages++;
       }
     }
     // retornar el contador de mensajes multimedia
     return multimediaMessages;
   }
+
+public static String[][] filterMessages(String[][] messages, String dateStart, String dateEnd) {
+  // metodo para filtrar los mensajes por fecha
+  // creamos un array temporal
+  String[][] temp = new String[0][0];
+  // recorremos el array
+  for (String[] m : messages) {
+    // comprobamos que la fecha del mensaje sea mayor o igual a la fecha de inicio y menor o igual a la fecha de fin
+    if (m[0].compareTo(dateStart) >= 0 && m[0].compareTo(dateEnd) <= 0) {
+      // si el array temporal está vacío, creamos un array temporal con el tamaño del array de mensajes
+      if (temp.length == 0) {
+        temp = new String[messages.length][4];
+      }
+      // recorremos el array temporal y vamos copiando los mensajes que cumplan con la condición
+      for (int i = 0; i < temp.length; i++) {
+        if (m[2] != null && temp[i][0] == null) { // si la posición del array temporal está vacía, copiamos el mensaje
+          temp[i][0] = m[0];
+          temp[i][1] = m[1];
+          temp[i][2] = m[2];
+          temp[i][3] = m[3];
+          break;
+        }
+      }
+    }
+  }
+  // devolvemos el array temporal
+  return temp;
+}
 }

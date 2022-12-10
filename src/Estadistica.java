@@ -1,8 +1,7 @@
-import javax.swing.table.DefaultTableModel;
-
 import helpers.ArrayHelper;
 import helpers.FileHelper;
 import helpers.ProjectHelper;
+import javax.swing.table.DefaultTableModel;
 
 public class Estadistica {
   // Array bidimensional para guardar los usuarios y un id para cada uno
@@ -88,7 +87,7 @@ public class Estadistica {
       } else { // si no detecta ningun usuario en la linea lo guarda como mensaje del ultimo usuario
         // validamos que tengamos un usario y una fecha para guardar el mensaje
         if (lastUser == null || lastDate == null) {
-          System.out.println("No se puede guardar el mensaje: " + message);
+          System.out.println("No se puede guardar el mensaje: " + line);
           continue;
         }
         // si el array está lleno aumentamos su tamaño
@@ -116,13 +115,34 @@ public class Estadistica {
     return messages;
   }
 
-  // metodo para extraer las estadisticas
-  public static void generarEstadistica() {
+  // metodo para extraer las estadisticas recibimos la fecha de inicio y la fecha de fin para filtrar los mensajes
+  public static void generarEstadistica(String dateStart, String dateEnd) {
+    
     // llamamos al metodo para extraer los datos del archivo
     String[][] users = extraerDatosUser(filePath);
     String[][] messages = extraerDatosMessage(filePath);
 
-    DefaultTableModel model = new DefaultTableModel(new String[] { "PARTICIPANTES", "INTERACCCIONES", "MEDIAS" }, 0);
+    // si las fechas están vacías mostramos todos los mensajes, si no mostramos los mensajes entre las fechas
+    if (dateStart.isEmpty() && dateEnd.isEmpty()) {
+      System.out.println("Mostrando todos los mensajes");
+    } else {
+      // filtramos los mensajes entre las fechas
+      messages = ArrayHelper.filterMessages(messages, dateStart, dateEnd);
+      // imprimimos los mensajes filtrados
+      System.out.println("Mostrando mensajes entre " + dateStart + " y " + dateEnd);
+      for (String[] message : messages) { // validamos que el mensaje no esté vacío
+        if (message[0] == null) {
+          continue;
+        }
+        System.out.println(message[0] + " " + message[1] + " " + message[2] + " " + message[3]);
+      }
+      return;
+    }
+
+    DefaultTableModel model = new DefaultTableModel(
+      new String[] { "PARTICIPANTES", "INTERACCCIONES", "MEDIAS" },
+      0
+    );
     // Recorrer el array de usuarios
     for (String[] user : users) {
       // si el usuario no está vacío
