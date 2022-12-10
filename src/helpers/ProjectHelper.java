@@ -9,7 +9,7 @@ public class ProjectHelper {
   );
 
   private static Pattern dateTimePattern2 = Pattern.compile(
-    "\\d{1,2}/\\d{1,2}/\\d{2,4}, \\d{2}:\\d{2,4}"
+    "(\\d{1,2}/\\d{1,2}/\\d{2,4}, \\d{2}:\\d{2,4} |\\d{1,2}/\\d{1,2}/\\d{2,4} \\d{2}:\\d{2,4})"
   );
   private static Pattern usPattern = Pattern.compile("- ([^:]{0,30}):");
 

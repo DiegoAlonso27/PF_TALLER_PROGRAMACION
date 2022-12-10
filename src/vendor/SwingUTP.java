@@ -6,6 +6,7 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.function.Consumer;
+import javax.swing.text.DateFormatter;
 
 public class SwingUTP {
 
@@ -155,5 +156,28 @@ public class SwingUTP {
     public static void runWindow(String title, int width, int height, boolean packed){
         makeWindow(title, width, height, packed);
     }
+
+    public static void addDateField(int x, int y, int width, int height, JFormattedTextField txtDate) {
+        // Set the date format for the JFormattedTextField
+        txtDate.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new DateFormatter(new java.text.SimpleDateFormat("dd/MM/yyyy"))));
+    
+        // Add a KeyListener to the JFormattedTextField to validate the date entered by the user
+        txtDate.addKeyListener(new KeyAdapter() {
+          public void keyTyped(KeyEvent e) {
+            char c = e.getKeyChar();
+            if (!((c >= '0') && (c <= '9') ||
+                (c == KeyEvent.VK_BACK_SPACE) ||
+                (c == KeyEvent.VK_DELETE) || (c == KeyEvent.VK_SLASH)))
+            {
+              JOptionPane.showMessageDialog(null, "Ingrese una fecha valida");
+              e.consume();
+            }
+          }
+        });
+
+        // Add the JFormattedTextField to the JFrame
+        addControl(x, y, width, height, txtDate);
+    }
+
 
 }

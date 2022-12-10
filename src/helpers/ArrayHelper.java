@@ -1,4 +1,5 @@
 package helpers;
+
 public class ArrayHelper {
 
   public static boolean inArray(String[][] users, String user) {
@@ -9,9 +10,9 @@ public class ArrayHelper {
         for (String[] u : users) {
           // si el usuario ya está en el array, devolvemos true
           // verificamos que el usuario no sea null
-            if (u[0] != null && u[0].equals(user)) {
-                return true;
-            }
+          if (u[0] != null && u[0].equals(user)) {
+            return true;
+          }
         }
         // si el usuario no está en el array, devolvemos false
         return false;
@@ -24,7 +25,7 @@ public class ArrayHelper {
     }
   }
 
-public static String[][] resize(String[][] users, int i, int c) {
+  public static String[][] resize(String[][] users, int i, int c) {
     // creamos un array temporal con el tamaño que le pasamos
     String[][] temp = new String[i][c];
     // recorremos el array
@@ -37,9 +38,9 @@ public static String[][] resize(String[][] users, int i, int c) {
     }
     // devolvemos el array temporal
     return temp;
-}
+  }
 
-public static String findId(String[][] users, String user) {
+  public static String findId(String[][] users, String user) {
     // recorremos el array
     for (String[] u : users) {
       // si el usuario ya está en el array, devolvemos su id
@@ -49,5 +50,66 @@ public static String findId(String[][] users, String user) {
     }
     // si el usuario no está en el array, devolvemos null
     return null;
-}
+  }
+
+  public static int countMessages(String[][] messages, String string) {
+    // creamos una variable para contar los mensajes
+    int count = 0;
+    // recorremos el array
+    for (String[] m : messages) {
+      // si el usuario ya está en el array, devolvemos su id
+      if (m[1].equals(string)) {
+        count++;
+      }
+    }
+    // devolvemos el número de mensajes
+    return count;
+  }
+
+  public static String[][] findMessages(String[][] messages, String idUser) {
+    // metodo para buscar los mensajes de un usuario en especifico y devolverlos en un array de 2 dimensiones con los mensajes
+    // creamos un array temporal
+    String[][] temp = new String[0][0];
+    // recorremos el array
+    for (String[] m : messages) {
+      // comprobamos que el id del usuario sea igual al id del mensaje
+      if (m[1].equals(idUser)) {
+        // si el array temporal está vacío, creamos un array temporal con el tamaño del array de mensajes
+        if (temp.length == 0) {
+          temp = new String[messages.length][3];
+        }
+        // recorremos el array temporal
+        for (int i = 0; i < temp.length; i++) {
+          // si la posición del array temporal está vacía, copiamos el mensaje
+          if (temp[i][0] == null) {
+            temp[i][0] = m[0];
+            temp[i][1] = m[1];
+            temp[i][2] = m[2];
+            break;
+          }
+        }
+
+      }
+    }
+    // devolvemos el array temporal
+    return temp;
+  }
+
+  public static int mediaMessages(String[][] messagesUser) {
+    // inicializar el contador de mensajes multimedia
+    int multimediaMessages = 0;
+    // recorrer la lista de mensajes
+    for (int i = 0; i < messagesUser.length; i++) {
+      // validar que el mensaje no sea null
+      if (messagesUser[i][2] == null) {
+        continue;
+      }
+      // si el mensaje contiene "<Multimedia omitido>" o "<Media omitted>", sumar 1 al contador
+      if (messagesUser[i][2].contains("<Multimedia omitido>") || messagesUser[i][2].contains("<Media omitted>")) {
+        multimediaMessages++;
+      }
+    }
+    // retornar el contador de mensajes multimedia
+    return multimediaMessages;
+  }
 }
