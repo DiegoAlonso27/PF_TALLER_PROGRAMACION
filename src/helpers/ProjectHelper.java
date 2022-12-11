@@ -1,7 +1,10 @@
 package helpers;
 
+import java.io.File;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class ProjectHelper {
   private static Pattern dateTimePattern1 = Pattern.compile(
@@ -51,7 +54,7 @@ public class ProjectHelper {
     if (dateMatcher.find()) {
       try {
         // Crea un patrón a partir de la expresión regular
-        Pattern pattern = Pattern.compile("(\\d{1,2})/(\\d{1,2})/(\\d{4})");
+        Pattern pattern = Pattern.compile("(\\d{1,2})/(\\d{1,2})/(\\d{2,4})");
         // Crea un objeto Matcher que se ajuste al patrón en el texto dado
         Matcher matcher = pattern.matcher(dateTime);
         // Intentar encontrar la primera coincidencia del patrón en el texto
@@ -69,6 +72,11 @@ public class ProjectHelper {
           // si el mes solo tiene un digito, agregarle un 0 a la izquierda
           if (month.length() == 1) {
             month = "0" + month;
+          }
+
+          // si el año solo tiene dos digitos, agregarle un 20 a la izquierda
+          if (year.length() == 2) {
+            year = "20" + year;
           }
 
           // guardar la fecha en formato dd/mm/aaaa
@@ -128,5 +136,32 @@ public class ProjectHelper {
       // Si no se encuentra una coincidencia, devolver una cadena vacía
       return "";
     }
+  }
+
+  public static String choosePath(String descString, String extString) {
+    // Crear un objeto JFileChooser
+    JFileChooser fileChooser = new JFileChooser();
+    // Establecer el directorio actual
+    fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+    // Establecer el filtro de archivos
+    FileNameExtensionFilter filter = new FileNameExtensionFilter(descString, extString);
+    fileChooser.setFileFilter(filter);
+    // Mostrar el cuadro de diálogo para seleccionar el archivo
+    int result = fileChooser.showOpenDialog(null);
+    // Si el usuario selecciona un archivo
+    if (result == JFileChooser.APPROVE_OPTION) {
+      // Obtener el archivo seleccionado
+      File selectedFile = fileChooser.getSelectedFile();
+      // Obtener la ruta del archivo seleccionado
+      String path = selectedFile.getAbsolutePath();
+      // Retornar la ruta del archivo seleccionado
+      return path;
+    } else {
+      // Si el usuario no selecciona un archivo, retornar una cadena vacía
+      return "";
+    }
+  }
+
+  public static void showSuccessMessage(String string) {
   }
 }

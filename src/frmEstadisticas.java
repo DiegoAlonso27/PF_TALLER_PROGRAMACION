@@ -1,6 +1,9 @@
 import helpers.FileHelper;
 import helpers.ProjectHelper;
+import helpers.DateHelper;
 import java.io.File;
+import java.text.ParseException;
+
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
@@ -181,6 +184,19 @@ public class frmEstadisticas {
   private void btnGuardar_Click(Object o) {}
 
   private void btnCSV_Click(Object object1) {
+    // exportamos a CSV los datos de la estadistica en el array statistics
+    // validamos si el array esta vacio
+    if (Estadistica.statistics.length == 0) {
+      JOptionPane.showMessageDialog(
+        null,
+        "No hay datos para exportar",
+        "Error",
+        JOptionPane.ERROR_MESSAGE
+      );
+      return;
+    }
+    // si hay datos llamamos al metodo exportCSV
+    FileHelper.exportCSV(Estadistica.statistics);
   }
 
   private void btnTXT_Click(Object object1) {

@@ -1,13 +1,17 @@
 import helpers.ArrayHelper;
 import helpers.FileHelper;
 import helpers.ProjectHelper;
+
+import java.text.ParseException;
+
 import javax.swing.table.DefaultTableModel;
 
 public class Estadistica {
   // Array bidimensional para guardar los usuarios y un id para cada uno
   private static String[][] users = new String[100][2];
   // Array para guardar los mensajes y un id para cada uno y el id del usuario que lo envió
-  private static String[][] messages = new String[10][4]; // id, user_id, message, date
+  private static String[][] messages = new String[100][4]; // id, user_id, message, date
+  public static String[][] statistics = new String[100][4]; // id, user_id, message, date
   public static String lastUser;
   public static String lastDate;
   public static String filePath;
@@ -126,23 +130,16 @@ public class Estadistica {
     if (dateStart.isEmpty() && dateEnd.isEmpty()) {
       System.out.println("Mostrando todos los mensajes");
     } else {
+      System.out.println("Mostrando mensajes entre " + dateStart + " y " + dateEnd);
       // filtramos los mensajes entre las fechas
       messages = ArrayHelper.filterMessages(messages, dateStart, dateEnd);
-      // imprimimos los mensajes filtrados
-      System.out.println("Mostrando mensajes entre " + dateStart + " y " + dateEnd);
-      for (String[] message : messages) { // validamos que el mensaje no esté vacío
-        if (message[0] == null) {
-          continue;
-        }
-        System.out.println(message[0] + " " + message[1] + " " + message[2] + " " + message[3]);
-      }
-      return;
     }
 
     DefaultTableModel model = new DefaultTableModel(
       new String[] { "PARTICIPANTES", "INTERACCCIONES", "MEDIAS" },
       0
     );
+    int statisticsCount = 0;
     // Recorrer el array de usuarios
     for (String[] user : users) {
       // si el usuario no está vacío
@@ -153,8 +150,20 @@ public class Estadistica {
         String[][] messagesUser = ArrayHelper.findMessages(messages, user[1]);
         // sacamos la media de los mensajes del usuario
         int media = ArrayHelper.mediaMessages(messagesUser);
+        // guardamos los datos en el array de statistics
+        // veerificamos si el array está lleno y aumentamos su tamaño
+        if (statistics.length == statisticsCount) {
+          statistics = ArrayHelper.resize(statistics, statistics.length + 1, 3);
+        }
+        // guardamos los datos en el array de statistics
+        statistics[statisticsCount][0] = user[0];
+        statistics[statisticsCount][1] = String.valueOf(count);
+        statistics[statisticsCount][2] = String.valueOf(media);
+        statisticsCount++;
         // mostramos el usuario en la columna PARTICIPANTES y el numero de mensajes en la columna INTERACCIONES y la media en la columna MEDIAS
         model.addRow(new Object[] { user[0], count, media });
+
+
       }
 
       frmEstadisticas.table.setModel(model);

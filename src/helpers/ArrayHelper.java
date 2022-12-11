@@ -1,5 +1,9 @@
 package helpers;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class ArrayHelper {
 
   public static boolean inArray(String[][] users, String user) {
@@ -115,31 +119,46 @@ public class ArrayHelper {
     return multimediaMessages;
   }
 
-public static String[][] filterMessages(String[][] messages, String dateStart, String dateEnd) {
-  // metodo para filtrar los mensajes por fecha
-  // creamos un array temporal
-  String[][] temp = new String[0][0];
-  // recorremos el array
-  for (String[] m : messages) {
-    // comprobamos que la fecha del mensaje sea mayor o igual a la fecha de inicio y menor o igual a la fecha de fin
-    if (m[0].compareTo(dateStart) >= 0 && m[0].compareTo(dateEnd) <= 0) {
-      // si el array temporal está vacío, creamos un array temporal con el tamaño del array de mensajes
-      if (temp.length == 0) {
-        temp = new String[messages.length][4];
-      }
-      // recorremos el array temporal y vamos copiando los mensajes que cumplan con la condición
-      for (int i = 0; i < temp.length; i++) {
-        if (m[2] != null && temp[i][0] == null) { // si la posición del array temporal está vacía, copiamos el mensaje
-          temp[i][0] = m[0];
-          temp[i][1] = m[1];
-          temp[i][2] = m[2];
-          temp[i][3] = m[3];
-          break;
+  public static String[][] filterMessages(
+    String[][] messages,
+    String strDateStart,
+    String strDateEnd
+  ) {
+    try {
+      // metodo para filtrar los mensajes por fecha
+      // creamos un array temporal
+      String[][] temp = new String[0][0];
+      SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+      Date dateStart = sdf.parse(strDateStart);
+      Date dateEnd = sdf.parse(strDateEnd);
+
+      // recorremos el array
+      for (String[] m : messages) {
+        Date dateMessage = sdf.parse(m[3]);
+        // tenemos las 3 fechas con el formato dd/mm/aaaa entonces comparamos que la fecha del mensaje esté entre la fecha inicial y la fecha final o que la fecha del mensaje sea igual a la fecha inicial o a la fecha final
+        if ((dateMessage.after(dateStart) && dateMessage.before(dateEnd) )|| dateMessage.equals(dateStart) || dateMessage.equals(dateEnd)) {
+          // si el array temporal está vacío, creamos un array temporal con el tamaño del array de mensajes
+          if (temp.length == 0) {
+            temp = new String[messages.length][4];
+          }
+          // recorremos el array temporal
+          for (int i = 0; i < temp.length; i++) {
+            // si la posición del array temporal está vacía, copiamos el mensaje
+            if (temp[i][0] == null) {
+              temp[i][0] = m[0];
+              temp[i][1] = m[1];
+              temp[i][2] = m[2];
+              temp[i][3] = m[3];
+              break;
+            }
+          }
         }
       }
+      // devolvemos el array temporal
+      return temp;
+    } catch (Exception e) {
+      System.out.println("Error: " + e.getMessage());
+      return null;
     }
   }
-  // devolvemos el array temporal
-  return temp;
-}
 }
