@@ -52,6 +52,10 @@ public class FileHelper {
       "Seleccione la ruta donde desea guardar el archivo CSV",
       "csv"
     );
+    // validamos si el path ya tiene el .csv al final o no
+    if (path.endsWith(".csv")) {
+      path = path.substring(0, path.length() - 4);
+    }
     // validamos si el usuario canceló la acción
     if (path.equals("")) {
       return;
@@ -61,8 +65,9 @@ public class FileHelper {
       // crear un objeto FileWriter
       FileWriter writer = new FileWriter(path + ".csv");
     ) {
+      // salto de columna 
       // ponemos el encabezado PARTICIPANTES, INTERACCIONES, MEDIAS en el archivo
-      writer.write("PARTICIPANTES,INTERACCIONES,MEDIAS \n");
+      writer.write("\"PARTICIPANTES\";\"INTERACCIONES\";\"MEDIAS\" \n");
       // recorremos el array statistics
       for (int i = 0; i < statistics.length; i++) {
         for (int j = 0; j < statistics[i].length; j++) {
@@ -72,7 +77,7 @@ public class FileHelper {
             writer.write(statistics[i][j]);
             // si no es la última columna, agregamos una coma
             if (j < 2) {
-              writer.write(",");
+              writer.write(";");
             }
           }
         }
@@ -264,4 +269,32 @@ public class FileHelper {
     }
 
   }
+
+public static void exportJSON(String[][] statistics) {
+  // TODO: exportar el array statistics a un archivo a una tabla JSON
+  // hacemos que el usuario elija donde guardar el archivo
+  String path = ProjectHelper.choosePath(
+    "Seleccione la ruta donde desea guardar el archivo JSON",
+    "json"
+  );
+  // validamos si el path ya tiene el .json al final o no
+  if (path.endsWith(".json")) {
+    path = path.substring(0, path.length() - 5);
+  }
+  // validamos si el usuario canceló la acción
+  if (path.equals("")) {
+    return;
+  }
+  // si el usuario no canceló la acción, guardamos el archivo
+  try (
+    // crear un objeto FileWriter
+    FileWriter writer = new FileWriter(path + ".json");
+  ) {
+    // escribimos el encabezado del archivo
+  } 
+  catch (IOException ex) {
+    // si ocurre un error, imprimir el mensaje de error
+    System.out.println(ex.getMessage());
+  }
+}
 }

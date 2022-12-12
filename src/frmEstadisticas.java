@@ -248,6 +248,19 @@ public class frmEstadisticas {
   }
 
   private void btnJSON_Click(Object object1) {
+    // exportamos a JSON los datos de la estadistica en el array statistics
+    // validamos si el array esta vacio
+    if (Estadistica.statistics.length == 0) {
+      JOptionPane.showMessageDialog(
+        null,
+        "No hay datos para exportar",
+        "Error",
+        JOptionPane.ERROR_MESSAGE
+      );
+      return;
+    }
+    // si hay datos llamamos al metodo exportJSON
+    FileHelper.exportJSON(Estadistica.statistics);
   }
 
   private void cleanDate_Click(Object o) {
