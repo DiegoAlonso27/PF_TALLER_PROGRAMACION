@@ -1,7 +1,7 @@
 import helpers.ArrayHelper;
 import helpers.FileHelper;
 import helpers.ProjectHelper;
-
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class Estadistica {
@@ -12,7 +12,7 @@ public class Estadistica {
   public static String[][] statistics = new String[100][4]; // id, user_id, message, date
   public static String lastUser;
   public static String lastDate;
-  public static String filePath;
+  public static String filePath = "";
 
   public static void main(String[] args) {
     // llamamos al metoddo mostrar de frmEstadisticas
@@ -119,7 +119,6 @@ public class Estadistica {
 
   // metodo para extraer las estadisticas recibimos la fecha de inicio y la fecha de fin para filtrar los mensajes
   public static void generarEstadistica(String dateStart, String dateEnd) {
-    
     // llamamos al metodo para extraer los datos del archivo
     String[][] users = extraerDatosUser(filePath);
     String[][] messages = extraerDatosMessage(filePath);
@@ -128,7 +127,9 @@ public class Estadistica {
     if (dateStart.isEmpty() && dateEnd.isEmpty()) {
       System.out.println("Mostrando todos los mensajes");
     } else {
-      System.out.println("Mostrando mensajes entre " + dateStart + " y " + dateEnd);
+      System.out.println(
+        "Mostrando mensajes entre " + dateStart + " y " + dateEnd
+      );
       // filtramos los mensajes entre las fechas
       messages = ArrayHelper.filterMessages(messages, dateStart, dateEnd);
     }
@@ -160,11 +161,23 @@ public class Estadistica {
         statisticsCount++;
         // mostramos el usuario en la columna PARTICIPANTES y el numero de mensajes en la columna INTERACCIONES y la media en la columna MEDIAS
         model.addRow(new Object[] { user[0], count, media });
-
-
       }
 
       frmEstadisticas.table.setModel(model);
     }
+  }
+
+  //funcion para validar si el usuario ha escogido un archivo o no
+  public static boolean validarArchivo() {
+    if (filePath == "") {
+      JOptionPane.showMessageDialog(
+        null,
+        "No ha seleccionado un archivo",
+        "Error",
+        JOptionPane.ERROR_MESSAGE
+      );
+      return false;
+    }
+    return true;
   }
 }

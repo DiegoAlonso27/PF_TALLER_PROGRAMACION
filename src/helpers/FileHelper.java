@@ -8,7 +8,6 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-
 import javax.swing.JOptionPane;
 
 public class FileHelper {
@@ -65,7 +64,7 @@ public class FileHelper {
       // crear un objeto FileWriter
       FileWriter writer = new FileWriter(path + ".csv");
     ) {
-      // salto de columna 
+      // salto de columna
       // ponemos el encabezado PARTICIPANTES, INTERACCIONES, MEDIAS en el archivo
       writer.write("\"PARTICIPANTES\";\"INTERACCIONES\";\"MEDIAS\" \n");
       // recorremos el array statistics
@@ -90,7 +89,6 @@ public class FileHelper {
         "Éxito",
         JOptionPane.INFORMATION_MESSAGE
       );
-
     } catch (IOException ex) {
       // si ocurre un error, imprimir el mensaje de error
       System.out.println(ex.getMessage());
@@ -159,7 +157,6 @@ public class FileHelper {
       ProjectHelper.showSuccessMessage(
         "El archivo TXT se ha exportado con éxito"
       );
-
     } catch (IOException ex) {
       // si ocurre un error, imprimir el mensaje de error
       System.out.println(ex.getMessage());
@@ -262,39 +259,36 @@ public class FileHelper {
       FileWriter writer = new FileWriter(path + ".xlsx");
     ) {
       // escribimos el encabezado del archivo
-    } 
-    catch (IOException ex) {
+    } catch (IOException ex) {
       // si ocurre un error, imprimir el mensaje de error
       System.out.println(ex.getMessage());
     }
-
   }
 
-public static void exportJSON(String[][] statistics) {
-  // TODO: exportar el array statistics a un archivo a una tabla JSON
-  // hacemos que el usuario elija donde guardar el archivo
-  String path = ProjectHelper.choosePath(
-    "Seleccione la ruta donde desea guardar el archivo JSON",
-    "json"
-  );
-  // validamos si el path ya tiene el .json al final o no
-  if (path.endsWith(".json")) {
-    path = path.substring(0, path.length() - 5);
+  public static void exportJSON(String[][] statistics) {
+    // TODO: exportar el array statistics a un archivo a una tabla JSON
+    // hacemos que el usuario elija donde guardar el archivo
+    String path = ProjectHelper.choosePath(
+      "Seleccione la ruta donde desea guardar el archivo JSON",
+      "json"
+    );
+    // validamos si el path ya tiene el .json al final o no
+    if (path.endsWith(".json")) {
+      path = path.substring(0, path.length() - 5);
+    }
+    // validamos si el usuario canceló la acción
+    if (path.equals("")) {
+      return;
+    }
+    // si el usuario no canceló la acción, guardamos el archivo
+    try (
+      // crear un objeto FileWriter
+      FileWriter writer = new FileWriter(path + ".json");
+    ) {
+      // escribimos el encabezado del archivo
+    } catch (IOException ex) {
+      // si ocurre un error, imprimir el mensaje de error
+      System.out.println(ex.getMessage());
+    }
   }
-  // validamos si el usuario canceló la acción
-  if (path.equals("")) {
-    return;
-  }
-  // si el usuario no canceló la acción, guardamos el archivo
-  try (
-    // crear un objeto FileWriter
-    FileWriter writer = new FileWriter(path + ".json");
-  ) {
-    // escribimos el encabezado del archivo
-  } 
-  catch (IOException ex) {
-    // si ocurre un error, imprimir el mensaje de error
-    System.out.println(ex.getMessage());
-  }
-}
 }

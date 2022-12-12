@@ -1,8 +1,6 @@
 import helpers.FileHelper;
-import helpers.ProjectHelper;
 import helpers.DateHelper;
 import java.io.File;
-import java.text.ParseException;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -138,8 +136,8 @@ public class frmEstadisticas {
   }
 
   private void btnGenerar_Click(Object o) {
-    // verificamos si el archivo existe
-    if (!FileHelper.exists(Estadistica.filePath)) {
+    // verificamos si el archivo existe o si el path esta vacio
+    if (!FileHelper.exists(Estadistica.filePath) || Estadistica.filePath == "") {
       // con JOptionPane mostramos un mensaje de error
       JOptionPane.showMessageDialog(
         null,
@@ -184,6 +182,10 @@ public class frmEstadisticas {
   private void btnGuardar_Click(Object o) {}
 
   private void btnCSV_Click(Object object1) {
+    // llamomos a la funcion validarArchivo para validar si el archivo existe o no
+    if (!Estadistica.validarArchivo()) {
+      return;
+    }
     // exportamos a CSV los datos de la estadistica en el array statistics
     // validamos si el array esta vacio
     if (Estadistica.statistics.length == 0) {
