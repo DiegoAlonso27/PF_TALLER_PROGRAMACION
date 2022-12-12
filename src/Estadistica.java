@@ -2,8 +2,6 @@ import helpers.ArrayHelper;
 import helpers.FileHelper;
 import helpers.ProjectHelper;
 
-import java.text.ParseException;
-
 import javax.swing.table.DefaultTableModel;
 
 public class Estadistica {

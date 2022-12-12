@@ -216,9 +216,35 @@ public class frmEstadisticas {
   }
 
   private void btnHTML_Click(Object object1) {
+    // exportamos a HTML los datos de la estadistica en el array statistics
+    // validamos si el array esta vacio
+    if (Estadistica.statistics.length == 0) {
+      JOptionPane.showMessageDialog(
+        null,
+        "No hay datos para exportar",
+        "Error",
+        JOptionPane.ERROR_MESSAGE
+      );
+      return;
+    }
+    // si hay datos llamamos al metodo exportHTML
+    FileHelper.exportHTML(Estadistica.statistics);
   }
 
   private void btnXLSX_Click(Object object1) {
+    // exportamos a XLSX los datos de la estadistica en el array statistics
+    // validamos si el array esta vacio
+    if (Estadistica.statistics.length == 0) {
+      JOptionPane.showMessageDialog(
+        null,
+        "No hay datos para exportar",
+        "Error",
+        JOptionPane.ERROR_MESSAGE
+      );
+      return;
+    }
+    // si hay datos llamamos al metodo exportXLSX
+    FileHelper.exportXLSX(Estadistica.statistics);
   }
 
   private void btnJSON_Click(Object object1) {

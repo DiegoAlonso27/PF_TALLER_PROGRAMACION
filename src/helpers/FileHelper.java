@@ -9,6 +9,8 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+import javax.swing.JOptionPane;
+
 public class FileHelper {
 
   public static String[] readFile(String url) {
@@ -59,35 +61,31 @@ public class FileHelper {
       // crear un objeto FileWriter
       FileWriter writer = new FileWriter(path + ".csv");
     ) {
-      // recorrer el array statistics
-      for (int i = 0; i < statistics.length; i++) { // recorremos las filas
-        // validamos si es la primera fila
-        if (i == 0) {
-          // escribimos el valor de la celda en el archivo
-          writer.write("PARTICIPANTES,INTERACCIONES,MEDIAS\n");
-        } else {
-          // para las demás filas ponemos los valores del array statistics respectivamente en las columnas
-          // validamos que no sea null el valor de la celda
-          // recorremos las columnas
-          for (int j = 0; j < statistics[i + 1].length; j++) {
-            // verificamos si es null el valor de la celda
-            if (statistics[i + 1][j] != null) {
-              // escribimos el valor de la celda en el archivo
-              writer.write(statistics[i][j]);
-              // si no es la última columna, agregamos un delimitador de celdas (una coma)
-              if (j < statistics[i].length - 1) {
-                writer.write(",");
-              }
+      // ponemos el encabezado PARTICIPANTES, INTERACCIONES, MEDIAS en el archivo
+      writer.write("PARTICIPANTES,INTERACCIONES,MEDIAS \n");
+      // recorremos el array statistics
+      for (int i = 0; i < statistics.length; i++) {
+        for (int j = 0; j < statistics[i].length; j++) {
+          // validamos si es null el valor de la celda
+          if (statistics[i][j] != null) {
+            // escribimos el valor de la celda en el archivo
+            writer.write(statistics[i][j]);
+            // si no es la última columna, agregamos una coma
+            if (j < 2) {
+              writer.write(",");
             }
-            // agregamos un delimitador de filas (un salto de línea)
-            writer.write("\n");
           }
         }
+        writer.write("\n");
       }
-      // mostramos un mensaje de éxito con JOptionPane
-      ProjectHelper.showSuccessMessage(
-        "El archivo CSV se ha exportado con éxito"
+      // mostramos un mensaje de éxito
+      JOptionPane.showMessageDialog(
+        null,
+        "El archivo CSV se ha guardado con éxito",
+        "Éxito",
+        JOptionPane.INFORMATION_MESSAGE
       );
+
     } catch (IOException ex) {
       // si ocurre un error, imprimir el mensaje de error
       System.out.println(ex.getMessage());
@@ -152,9 +150,118 @@ public class FileHelper {
         }
       }
 
+      // mensaje de éxito con JOptionPane
+      ProjectHelper.showSuccessMessage(
+        "El archivo TXT se ha exportado con éxito"
+      );
+
     } catch (IOException ex) {
       // si ocurre un error, imprimir el mensaje de error
       System.out.println(ex.getMessage());
     }
+  }
+
+  public static void exportHTML(String[][] statistics) {
+    // TODO: exportar el array statistics a un archivo a una tabla HTML
+    // hacemos que el usuario elija donde guardar el archivo
+    String path = ProjectHelper.choosePath(
+      "Seleccione la ruta donde desea guardar el archivo HTML",
+      "html"
+    );
+    // validamos si el path ya tiene el .html al final o no
+    if (path.endsWith(".html")) {
+      path = path.substring(0, path.length() - 5);
+    }
+    // validamos si el usuario canceló la acción
+    if (path.equals("")) {
+      return;
+    }
+    // si el usuario no canceló la acción, guardamos el archivo
+    try (
+      // crear un objeto FileWriter
+      FileWriter writer = new FileWriter(path + ".html");
+    ) {
+      // escribimos el encabezado del archivo HTML
+      writer.write("<!DOCTYPE html>\r \n");
+      writer.write("<html>\r \n");
+      writer.write("<head>\r \n");
+      writer.write("<title>Estadísticas</title>\r \n");
+      writer.write("</head>\r \n");
+      writer.write("<body>\r \n");
+      writer.write("<table>\r \n");
+      // escribimos el titulo de la tabla en el archivo
+      writer.write("<tr>\r \n");
+      writer.write("<th>Participantes</th>\r \n");
+      writer.write("<th>Interacciones</th>\r \n");
+      writer.write("<th>Medias</th>\r \n");
+      writer.write("</tr>\r \n");
+      // recorremos el array statistics
+      for (int i = 0; i < statistics.length; i++) {
+        // validamos si es null el valor de la celda
+        if (statistics[i][0] != null) {
+          // escribimos la etiqueta de apertura de fila
+          writer.write("<tr>\r \n");
+          // recorremos las columnas
+          for (int j = 0; j < statistics[i].length; j++) {
+            // validamos si es null el valor de la celda
+            if (statistics[i][j] != null) {
+              // escribimos la etiqueta de apertura de celda
+              writer.write("<td>");
+              // escribimos el valor de la celda en el archivo
+              writer.write(statistics[i][j]);
+              // escribimos la etiqueta de cierre de celda
+              writer.write("</td>\r \n");
+            }
+          }
+          // escribimos la etiqueta de cierre de fila
+          writer.write("</tr>\r \n");
+        }
+      }
+      // escribimos el cierre de la tabla
+      writer.write("</table>\r \n");
+      // escribimos el cierre del archivo HTML
+      writer.write("</body>\r \n");
+      writer.write("</html>\r \n");
+
+      //mensaje de confirmación
+      JOptionPane.showMessageDialog(
+        null,
+        "El archivo se ha guardado correctamente",
+        "Archivo guardado",
+        JOptionPane.INFORMATION_MESSAGE
+      );
+    } catch (IOException ex) {
+      // si ocurre un error, imprimir el mensaje de error
+      System.out.println(ex.getMessage());
+    }
+  }
+
+  public static void exportXLSX(String[][] statistics) {
+    // TODO: exportar el array statistics a un archivo a una tabla excel
+    // hacemos que el usuario elija donde guardar el archivo
+    String path = ProjectHelper.choosePath(
+      "Seleccione la ruta donde desea guardar el archivo XLSX",
+      "xlsx"
+    );
+    // validamos si el path ya tiene el .xlsx al final o no
+    if (path.endsWith(".xlsx")) {
+      path = path.substring(0, path.length() - 5);
+    }
+    // validamos si el usuario canceló la acción
+    if (path.equals("")) {
+      return;
+    }
+    // si el usuario no canceló la acción, guardamos el archivo
+    try (
+      // crear un objeto FileWriter
+      FileWriter writer = new FileWriter(path + ".xlsx");
+    ) {
+      // escribimos el encabezado del archivo
+    } 
+    catch (IOException ex) {
+      // si ocurre un error, imprimir el mensaje de error
+      System.out.println(ex.getMessage());
+    }
+
   }
 }
