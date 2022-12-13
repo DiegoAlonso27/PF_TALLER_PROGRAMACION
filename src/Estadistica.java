@@ -119,6 +119,13 @@ public class Estadistica {
 
   // metodo para extraer las estadisticas recibimos la fecha de inicio y la fecha de fin para filtrar los mensajes
   public static void generarEstadistica(String dateStart, String dateEnd) {
+    // limpiamoa las variables
+    lastUser = null;
+    lastDate = null;
+    // limpiamos los arrays
+    users = new String[100][2];
+    messages = new String[100][4]; // id, user_id, message, date
+    statistics = new String[100][4]; // id, user_id, message, date
     // llamamos al metodo para extraer los datos del archivo
     String[][] users = extraerDatosUser(filePath);
     String[][] messages = extraerDatosMessage(filePath);
