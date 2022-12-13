@@ -258,7 +258,31 @@ public class FileHelper {
       // crear un objeto FileWriter
       FileWriter writer = new FileWriter(path + ".xlsx");
     ) {
-      // escribimos el encabezado del archivo
+       // salto de columna
+      // ponemos el encabezado PARTICIPANTES, INTERACCIONES, MEDIAS en el archivo
+      writer.write("\"PARTICIPANTES\";\"INTERACCIONES\";\"MEDIAS\" \n");
+      // recorremos el array statistics
+      for (int i = 0; i < statistics.length; i++) {
+        for (int j = 0; j < statistics[i].length; j++) {
+          // validamos si es null el valor de la celda
+          if (statistics[i][j] != null) {
+            // escribimos el valor de la celda en el archivo
+            writer.write(statistics[i][j]);
+            // si no es la última columna, agregamos una coma
+            if (j < 2) {
+              writer.write(";");
+            }
+          }
+        }
+        writer.write("\n");
+      }
+      // mostramos un mensaje de éxito
+      JOptionPane.showMessageDialog(
+        null,
+        "El archivo Excel se ha guardado con éxito",
+        "Éxito",
+        JOptionPane.INFORMATION_MESSAGE
+      );
     } catch (IOException ex) {
       // si ocurre un error, imprimir el mensaje de error
       System.out.println(ex.getMessage());
