@@ -317,4 +317,17 @@ public class FileHelper {
       System.out.println(ex.getMessage());
     }
   }
+
+public static boolean isTextFile(String path) {
+  // TODO: validar si el archivo es de texto
+  // validamos si el path es null o está vacío
+  if (path == null || path.equals("")) {
+    return false;
+  }
+  // validamos si el path tiene la extensión .txt
+  if (path.endsWith(".txt")) {
+    return true;
+  }
+  return false;
+}
 }

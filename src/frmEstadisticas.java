@@ -128,6 +128,17 @@ public class frmEstadisticas {
         );
         return;
       }
+      // validamos que sea un archivo de texto
+      if (!FileHelper.isTextFile(path)) {
+        // con JOptionPane mostramos un mensaje de error
+        JOptionPane.showMessageDialog(
+          null,
+          "El archivo no es de texto",
+          "Error",
+          JOptionPane.ERROR_MESSAGE
+        );
+        return;
+      }
       // mandamos el path al valor de filePaht
       Estadistica.filePath = path;
       // mostramos el nombre del archivo en el label

@@ -2,13 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="600f286a-f448-46e7-98ef-3cedb8015e2e" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/TRABAJO_FINAL_1.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,10 +25,18 @@
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false"
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "D:/taller de java/PF_TALLER_PROGRAMACION"
   }
 }]]></component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Application.Estadistica">
+    <configuration name="Estadistica" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Estadistica" />
+      <module name="TRABAJO_FINAL_1" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Main" />
       <module name="TRABAJO_FINAL_1" />
@@ -44,6 +46,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.Estadistica" />
         <item itemvalue="Application.Main" />
       </list>
     </recent_temporary>
@@ -57,6 +60,7 @@
       <option name="presentableId" value="Default" />
       <updated>1670356515430</updated>
       <workItem from="1670356516851" duration="3382000" />
+      <workItem from="1670938403127" duration="304000" />
     </task>
     <servers />
   </component>
