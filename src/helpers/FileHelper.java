@@ -36,10 +36,12 @@ public class FileHelper {
     }
   }
 
+  // funcion para validar si un archivo existe o no
   public static boolean exists(String path) {
     return Files.exists(Paths.get(path));
   }
 
+  // funcion para ver la ruta absoluta del proyecto
   public static String joinPath(String path) {
     return Paths.get("").toAbsolutePath().toString() + path;
   }
