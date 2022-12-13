@@ -202,6 +202,10 @@ public class frmEstadisticas {
   }
 
   private void btnTXT_Click(Object object1) {
+    // llamomos a la funcion validarArchivo para validar si el archivo existe o no
+    if (!Estadistica.validarArchivo()) {
+      return;
+    }
     // exportamos a TXT los datos de la estadistica en el array statistics
     // validamos si el array esta vacio
     if (Estadistica.statistics.length == 0) {
@@ -218,6 +222,10 @@ public class frmEstadisticas {
   }
 
   private void btnHTML_Click(Object object1) {
+    // llamomos a la funcion validarArchivo para validar si el archivo existe o no
+    if (!Estadistica.validarArchivo()) {
+      return;
+    }
     // exportamos a HTML los datos de la estadistica en el array statistics
     // validamos si el array esta vacio
     if (Estadistica.statistics.length == 0) {
@@ -234,6 +242,10 @@ public class frmEstadisticas {
   }
 
   private void btnXLSX_Click(Object object1) {
+    // llamomos a la funcion validarArchivo para validar si el archivo existe o no
+    if (!Estadistica.validarArchivo()) {
+      return;
+    }
     // exportamos a XLSX los datos de la estadistica en el array statistics
     // validamos si el array esta vacio
     if (Estadistica.statistics.length == 0) {
@@ -250,6 +262,10 @@ public class frmEstadisticas {
   }
 
   private void btnJSON_Click(Object object1) {
+    // llamomos a la funcion validarArchivo para validar si el archivo existe o no
+    if (!Estadistica.validarArchivo()) {
+      return;
+    }
     // exportamos a JSON los datos de la estadistica en el array statistics
     // validamos si el array esta vacio
     if (Estadistica.statistics.length == 0) {
